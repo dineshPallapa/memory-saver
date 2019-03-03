@@ -66,8 +66,13 @@ def phone_to_words(phone)
     raise "Phone number didn't accept '0' or '1' "
   end
 
-  possible_phone_combinations << possible_match
-  return possible_phone_combinations.map{|a| a.reject(&:empty?)}
+  final_available_words = possible_phone_combinations.map { |a| a.reject(&:empty?) }
+  final_available_words = final_available_words.map! do |words|
+    if(words.length == 2)
+      words.first.product(words.last)
+    end
+  end
+  return ((final_available_words).compact! << possible_match).flatten(1)
 end
 
 start = Time.now
